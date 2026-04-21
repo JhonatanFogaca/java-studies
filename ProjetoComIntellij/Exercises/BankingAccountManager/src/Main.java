@@ -27,35 +27,33 @@ public class Main {
                 case 2 -> checkOverdraft();
                 case 3 -> makedeposit();
                 case 4 -> makewhithdraw();
-                case 5 -> {
-                    if (account == null){
-                        System.out.println("Crie uma conta primeiro!");
-                        return;
-                    }else{
-                        var b = 1;
-                    }
-                }
+                case 5 -> makePayment();
                 case 6 -> CheckOverdraftUsed();
-                case 7 -> {
-                    if (account == null){
-                        System.out.println("Crie uma conta primeiro!");
-                        return;
-                    }else{
-                        createAnAccount();
-                    }
-                }
-
+                case 7 -> createAnAccount();
                 case 0 -> System.exit(0);
                 default -> System.out.println("Opção Inválida");
             }
         }while (true);
     }
 
-    private static void CheckOverdraftUsed() {
+    private static void makePayment() {
         if (account == null){
             System.out.println("Crie uma conta primeiro!");
         }else{
-            var b = 2;
+            var amount = 0.00;
+            System.out.println("Informe o Valor do Boleto: ");
+            amount = scanner.nextDouble();
+            account.payTicket(amount);
+        }
+
+    }
+
+    private static void CheckOverdraftUsed() {
+        if (account == null){
+            System.out.println("Crie uma conta primeiro!");
+
+        }else{
+            account.overdraftInUse();
         }
     }
 
@@ -101,6 +99,12 @@ public class Main {
     }
 
     private static void createAnAccount(){
+
+        if (account != null){
+            System.out.println("Você ja possui uma conta cadastrada!");
+            return;
+        }
+
         var username = "";
         var initialDeposit = 0.00;
         var overdraftlimit = 50.00;

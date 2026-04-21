@@ -25,8 +25,32 @@ public class Account {
         return overdraftlimit;
     }
 
-    public double getOverdraftlimitinuse() {
-        return overdraftlimitinuse;
+    public void payTicket(double amount){
+
+        if (balance > 0){
+            double paylimit = balance + overdraftlimit;
+
+            if (amount > paylimit){
+                System.out.println("O valor do boleto é maior que o valor disponivel, o valor atual disponivel é de " + paylimit + " R$");
+                return;
+            }else{
+                balance -= amount;
+
+                System.out.println("Pagamento realizado com sucesso!");
+            }
+        }else{
+            overdraftlimitinuse = Math.abs(balance);
+            double paylimit = overdraftlimit - overdraftlimitinuse;
+            if (amount > paylimit) {
+                System.out.println("O valor do Boleto é maior que o valor disponivel, o valor atual disponivel é de " + paylimit + " R$");
+                return;
+            }else{
+                balance -= amount;
+
+                System.out.println("Pagamento realizado com sucesso!");
+            }
+        }
+
     }
 
     public void deposit(double amount){
@@ -40,7 +64,7 @@ public class Account {
         }else {
             double debt = Math.abs(balance);
 
-            double tax = balance * 0.2;
+            double tax = debt * 0.2;
 
             if (amount >= debt){
                 //Cobre toda a dívida
@@ -69,12 +93,14 @@ public class Account {
         }
     }
 
-    public void overtraftInUse(){
+    public void overdraftInUse(){
 
         if (balance < 0){
+            overdraftlimitinuse = Math.abs(balance);
+            System.out.println("Voce está usando " + overdraftlimitinuse + " do seu limite de cheque especial");
 
-            System.out.println("Voce está usando " + (overdraftlimitinuse - Math.abs(balance)) + " do seu limite de cheque especial");
-
+        }else {
+            System.out.println("Voce não está usando limite do seu cheque especial");
         }
 
     }
